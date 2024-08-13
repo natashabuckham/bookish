@@ -19,13 +19,8 @@ public class HomeController : Controller
     }
     public IActionResult BookList()
     {
-        BookListModel allBooks = new BookListModel();
         BookModel prideAndPrejudice = new BookModel { Id = 1, Name = "Pride and Prejudice", Author = "Jane Austen", Genre = "Classic" };
-        BookModel macbeth = new BookModel { Id = 2, Name = "Macbeth", Author = "Shakespeare", Genre = "Play" };
-        allBooks.Books.Add(prideAndPrejudice);
-        allBooks.Books.Add(macbeth);
-
-        return View(allBooks);
+        return View(prideAndPrejudice);
     }
 
     public IActionResult Privacy()

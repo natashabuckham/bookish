@@ -1,13 +1,16 @@
-@model BookModel
+@model Bookish.Models.BookshelfModel
 @using Bookish.Controllers
 
 @{
-    ViewData["Title"] = "Book";
+    ViewData["Title"] = "Books";
 }
 
 <div class="text-center">
     <h1 class="display-4">Book</h1>
-    <p>Name: @Model.Name</p><br>
-    <p>Author: @Model.Author</p><br>
-    <p>Genre: @Model.Genre</p><br>
+    @foreach (var book in Model.Books)
+    {
+    <p>Name: @book.Name</p><br>
+    <p>Author: @book.Author</p><br>
+    <p>Genre: @book.Genre</p><br>
+    }
 </div>

@@ -17,21 +17,21 @@ public class HomeController : Controller
     {
         return View();
     }
-    public IActionResult BookList()
-    {
-        var context = new BookishContext();
-        BookshelfModel allBooks = new BookshelfModel();
+    // public IActionResult BookList()
+    // {
+    //     var context = new BookishContext();
+    //     BookshelfModel allBooks = new BookshelfModel();
 
-        allBooks.Books = (from book in context.Books select new BookModel()
-        {
-            Id=book.Id,
-            Name=book.Name,
-            Author=book.Author,
-            Genre=book.Genre
-        }).ToList();
+    //     allBooks.Books = (from book in context.Books select new BookModel()
+    //     {
+    //         Id=book.Id,
+    //         Name=book.Name,
+    //         Author=book.Author,
+    //         Genre=book.Genre
+    //     }).ToList();
         
-        return View(allBooks);
-    }
+    //     return View(allBooks);
+    // }
 
     public IActionResult Privacy()
     {

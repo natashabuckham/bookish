@@ -24,4 +24,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "catalogue",
+    pattern: "{controller=Catalogue}/{action=BookList}/{id?}");
+
 app.Run();

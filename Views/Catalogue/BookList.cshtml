@@ -6,7 +6,8 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Book</h1>
+    <h1 class="display-4">Book Catalogue</h1>
+    <p>@Html.TextBox("searchinput") <button>Search</button></p>
     @foreach (var book in Model.Books)
     {
     <p>Name: @book.Name</p><br>

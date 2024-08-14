@@ -16,17 +16,81 @@ public class CatalogueController : Controller
         _context = new BookishContext();
     }
 
-    public IActionResult BookList()
+    public IActionResult BookList(string sortOrder)
     {
+        ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+        ViewData["AuthorSortParm"] = sortOrder == "Author" ? "author_desc" : "Author";
+        ViewData["GenreSortParm"] = sortOrder == "Genre" ? "genre_desc" : "Genre";
         BookshelfModel allBooks = new BookshelfModel();
 
-        allBooks.Books = (from book in _context.Books select new BookModel()
+        // allBooks.Books = (from book in _context.Books orderby book.Name select new BookModel()
+        // {
+        //     Id=book.Id,
+        //     Name=book.Name,
+        //     Author=book.Author,
+        //     Genre=book.Genre
+        // });
+
+        switch (sortOrder)
         {
-            Id=book.Id,
-            Name=book.Name,
-            Author=book.Author,
-            Genre=book.Genre
-        }).ToList();
+            // case "name_asc":
+            //     allBooks.Books = allBooks.Books.OrderByAscending(book => book.Name);
+            //     break;
+            case "name_desc":
+                allBooks.Books = (from book in _context.Books orderby book.Name descending select new BookModel()
+                {
+                Id=book.Id,
+                Name=book.Name,
+                Author=book.Author,
+                Genre=book.Genre
+                }).ToList();  
+                break;
+            case "Author":
+                allBooks.Books = (from book in _context.Books orderby book.Author select new BookModel()
+                {
+                Id=book.Id,
+                Name=book.Name,
+                Author=book.Author,
+                Genre=book.Genre
+                }).ToList();  
+                break;
+             case "author_desc":
+                allBooks.Books = (from book in _context.Books orderby book.Author descending select new BookModel()
+                {
+                Id=book.Id,
+                Name=book.Name,
+                Author=book.Author,
+                Genre=book.Genre
+                }).ToList();  
+                break;
+             case "Genre":
+                allBooks.Books = (from book in _context.Books orderby book.Genre select new BookModel()
+                {
+                Id=book.Id,
+                Name=book.Name,
+                Author=book.Author,
+                Genre=book.Genre
+                }).ToList();  
+                break;
+             case "genre_desc":
+                allBooks.Books = (from book in _context.Books orderby book.Genre descending select new BookModel()
+                {
+                Id=book.Id,
+                Name=book.Name,
+                Author=book.Author,
+                Genre=book.Genre
+                }).ToList();  
+                break;
+            default:
+                allBooks.Books = (from book in _context.Books orderby book.Name select new BookModel()
+                {
+                Id=book.Id,
+                Name=book.Name,
+                Author=book.Author,
+                Genre=book.Genre
+                }).ToList();  
+                break;
+        }
         
         return View(allBooks);
     }

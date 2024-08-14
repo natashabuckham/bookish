@@ -21,74 +21,28 @@ public class CatalogueController : Controller
         ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
         ViewData["AuthorSortParm"] = sortOrder == "Author" ? "author_desc" : "Author";
         ViewData["GenreSortParm"] = sortOrder == "Genre" ? "genre_desc" : "Genre";
-        BookshelfModel allBooks = new BookshelfModel();
 
-        // allBooks.Books = (from book in _context.Books orderby book.Name select new BookModel()
-        // {
-        //     Id=book.Id,
-        //     Name=book.Name,
-        //     Author=book.Author,
-        //     Genre=book.Genre
-        // });
+        List<BookModel> allBooks;
 
         switch (sortOrder)
         {
-            // case "name_asc":
-            //     allBooks.Books = allBooks.Books.OrderByAscending(book => book.Name);
-            //     break;
             case "name_desc":
-                allBooks.Books = (from book in _context.Books orderby book.Name descending select new BookModel()
-                {
-                Id=book.Id,
-                Name=book.Name,
-                Author=book.Author,
-                Genre=book.Genre
-                }).ToList();  
+               allBooks = _context.Books.OrderByDescending(book => book.Name).ToList(); 
                 break;
             case "Author":
-                allBooks.Books = (from book in _context.Books orderby book.Author select new BookModel()
-                {
-                Id=book.Id,
-                Name=book.Name,
-                Author=book.Author,
-                Genre=book.Genre
-                }).ToList();  
+                allBooks = _context.Books.OrderBy(book => book.Author).ToList(); 
                 break;
              case "author_desc":
-                allBooks.Books = (from book in _context.Books orderby book.Author descending select new BookModel()
-                {
-                Id=book.Id,
-                Name=book.Name,
-                Author=book.Author,
-                Genre=book.Genre
-                }).ToList();  
+                allBooks = _context.Books.OrderByDescending(book => book.Author).ToList();
                 break;
              case "Genre":
-                allBooks.Books = (from book in _context.Books orderby book.Genre select new BookModel()
-                {
-                Id=book.Id,
-                Name=book.Name,
-                Author=book.Author,
-                Genre=book.Genre
-                }).ToList();  
+                allBooks = _context.Books.OrderBy(book => book.Genre).ToList();
                 break;
              case "genre_desc":
-                allBooks.Books = (from book in _context.Books orderby book.Genre descending select new BookModel()
-                {
-                Id=book.Id,
-                Name=book.Name,
-                Author=book.Author,
-                Genre=book.Genre
-                }).ToList();  
+                allBooks = _context.Books.OrderByDescending(book => book.Genre).ToList(); 
                 break;
             default:
-                allBooks.Books = (from book in _context.Books orderby book.Name select new BookModel()
-                {
-                Id=book.Id,
-                Name=book.Name,
-                Author=book.Author,
-                Genre=book.Genre
-                }).ToList();  
+                allBooks = _context.Books.OrderBy(book => book.Name).ToList(); 
                 break;
         }
         
@@ -102,29 +56,20 @@ public class CatalogueController : Controller
             return NotFound();
         }
 
-        BookshelfModel foundBooks = new BookshelfModel();
+        BookModel foundBook = _context.Books.Find(id);
 
-        foundBooks.Books = (from book in _context.Books where book.Id == id select new BookModel()
-        {
-            Id=book.Id,
-            Name=book.Name,
-            Author=book.Author,
-            Genre=book.Genre
-        }).ToList();
-        
-        // book = _context.Books.First(book => book.Id == id);
-
-        if (foundBooks.Books == null)
+        if (foundBook == null)
         {
             return NotFound();
         }
 
-        return View(foundBooks);
+        return View(foundBook);
     }
 
     [HttpPost]
-    public ActionResult SearchResult()
+    public ActionResult SearchResult(string searchInput)
     {
+        BookModel foundBook = _context.Books.Where(book => book.Name == searchInput).FirstOrDefault<BookModel>();
         return View("searchinput");
     }
 

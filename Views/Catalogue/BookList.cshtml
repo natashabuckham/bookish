@@ -1,4 +1,4 @@
-@model Bookish.Models.BookshelfModel
+@model List<Bookish.Models.BookModel>
 @using Bookish.Controllers
 
 @{
@@ -9,20 +9,29 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(Model => Model.Books[0].Name)</a>
+                @Html.DisplayNameFor(Model => Model[0].Id)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]">@Html.DisplayNameFor(Model => Model.Books[0].Author)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(Model => Model[0].Name)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["GenreSortParm"]">@Html.DisplayNameFor(Model => Model.Books[0].Genre)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]">@Html.DisplayNameFor(Model => Model[0].Author)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["GenreSortParm"]">@Html.DisplayNameFor(Model => Model[0].Genre)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model[0].TotalCopies)
             </th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var book in Model.Books)
+    @foreach (var book in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => book.Id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => book.Name)
             </td>
@@ -33,20 +42,12 @@
                 @Html.DisplayFor(modelItem => book.Genre)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => book.TotalCopies)
+            </td>
+            <td>
                 <a asp-action="Details" asp-route-id="@book.Id">Details</a>
             </td>
         </tr>
     }
     </tbody>
 </table>
-
-@* <div class="text-center">
-    <h1 class="display-4">Book Catalogue</h1>
-    <p>@Html.TextBox("searchinput") <button>Search</button></p>
-    @foreach (var book in Model.Books)
-    {
-    <p>Name: @book.Name</p><br>
-    <p>Author: @book.Author</p><br>
-    <p>Genre: @book.Genre</p><br>
-    }
-</div> *@

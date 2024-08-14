@@ -1,9 +1,11 @@
 @using Bookish.Controllers
-@model Bookish.Models.BookshelfModel
+@model Bookish.Models.BookModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<div>@Html.DisplayNameFor(Model => Model.Books[0].Name)</div>
-<div>@Html.DisplayFor(Model => Model.Books[0].Name)</div>
+<div>@Html.DisplayNameFor(Model => Model.Name)</div>
+<div>@Html.DisplayFor(Model => Model.Name)</div>
+<div>@Html.DisplayFor(Model => Model.Author)</div>
+<div>@Html.DisplayFor(Model => Model.Description)</div>

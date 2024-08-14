@@ -1,0 +1,9 @@
+@using Bookish.Controllers
+@model Bookish.Models.BookshelfModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>@Html.DisplayNameFor(Model => Model.Books[0].Name)</div>
+<div>@Html.DisplayFor(Model => Model.Books[0].Name)</div>

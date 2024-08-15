@@ -7,14 +7,11 @@ namespace Bookish.Controllers;
 
 public class CatalogueController : Controller
 {
-    private readonly ILogger<CatalogueController> _logger;
+    private readonly Bookish.BookishContext bookishContext;
 
-    private readonly Bookish.BookishContext _context;
-
-    public CatalogueController(ILogger<CatalogueController> logger)
+    public CatalogueController (BookishContext bookishContext)
     {
-        _logger = logger;
-        _context = new BookishContext();
+        this.bookishContext = bookishContext;
     }
 
     public IActionResult BookList(string sortOrder, string searchString = "")
@@ -28,28 +25,28 @@ public class CatalogueController : Controller
         switch (sortOrder)
         {
             case "name_desc":
-                allBooks = _context.Books.OrderByDescending(book => book.Name).ToList();
+                allBooks = bookishContext.Books.OrderByDescending(book => book.Name).ToList();
                 break;
             case "Author":
-                allBooks = _context.Books.OrderBy(book => book.Author).ToList();
+                allBooks = bookishContext.Books.OrderBy(book => book.Author).ToList();
                 break;
             case "author_desc":
-                allBooks = _context.Books.OrderByDescending(book => book.Author).ToList();
+                allBooks = bookishContext.Books.OrderByDescending(book => book.Author).ToList();
                 break;
             case "Genre":
-                allBooks = _context.Books.OrderBy(book => book.Genre).ToList();
+                allBooks = bookishContext.Books.OrderBy(book => book.Genre).ToList();
                 break;
             case "genre_desc":
-                allBooks = _context.Books.OrderByDescending(book => book.Genre).ToList();
+                allBooks = bookishContext.Books.OrderByDescending(book => book.Genre).ToList();
                 break;
             default:
-                allBooks = _context.Books.OrderBy(book => book.Name).ToList();
+                allBooks = bookishContext.Books.OrderBy(book => book.Name).ToList();
                 break;
         }
 
         if (!String.IsNullOrEmpty(searchString))
         {
-            allBooks = _context.Books.Where(book => book.Name!.ToUpper().Contains(searchString.ToUpper())).ToList();
+            allBooks = bookishContext.Books.Where(book => book.Name!.ToUpper().Contains(searchString.ToUpper())).ToList();
         }
 
         return View(allBooks);
@@ -63,7 +60,7 @@ public class CatalogueController : Controller
             return NotFound();
         }
 
-        BookModel foundBook = _context.Books.Find(id);
+        BookModel foundBook = bookishContext.Books.Find(id);
 
         if (foundBook == null)
         {
@@ -76,7 +73,7 @@ public class CatalogueController : Controller
     [HttpPost]
     public ActionResult SearchResult(string searchInput)
     {
-        BookModel foundBook = _context.Books.Where(book => book.Name == searchInput).FirstOrDefault<BookModel>();
+        BookModel foundBook = bookishContext.Books.Where(book => book.Name == searchInput).FirstOrDefault<BookModel>();
         return View(foundBook);
     }
 
@@ -98,9 +95,9 @@ public class CatalogueController : Controller
             TotalCopies = viewModel.TotalCopies,
             AvailableCopies = viewModel.AvailableCopies
         };
-        await _context.Books.AddAsync(newBook);
+        await bookishContext.Books.AddAsync(newBook);
 
-        await _context.SaveChangesAsync();
+        await bookishContext.SaveChangesAsync();
 
         return RedirectToAction("BookList", "Catalogue");
     }
@@ -108,7 +105,7 @@ public class CatalogueController : Controller
     [HttpGet]
     public async Task<IActionResult> EditBook(int id)
     {
-        var book = await _context.Books.FindAsync(id);
+        var book = await bookishContext.Books.FindAsync(id);
 
         return View(book);
     }
@@ -116,7 +113,7 @@ public class CatalogueController : Controller
     [HttpPost]
     public async Task<IActionResult> EditBook(BookModel viewModel)
     {
-        var book = await _context.Books.FindAsync(viewModel.Id);
+        var book = await bookishContext.Books.FindAsync(viewModel.Id);
         if (book != null) {
             book.Name = viewModel.Name;
             book.Author = viewModel.Author;
@@ -125,7 +122,7 @@ public class CatalogueController : Controller
             book.TotalCopies = viewModel.TotalCopies;
             book.AvailableCopies = viewModel.AvailableCopies;
 
-            await _context.SaveChangesAsync();
+            await bookishContext.SaveChangesAsync();
         }
 
         return RedirectToAction("BookList", "Catalogue");
@@ -134,12 +131,12 @@ public class CatalogueController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(BookModel viewModel)
     {
-        var book = await _context.Books.AsNoTracking().FirstOrDefaultAsync(x => x.Id == viewModel.Id);
+        var book = await bookishContext.Books.AsNoTracking().FirstOrDefaultAsync(x => x.Id == viewModel.Id);
 
         if (book != null)
         {
-            _context.Books.Remove(viewModel);
-            await _context.SaveChangesAsync();
+            bookishContext.Books.Remove(viewModel);
+            await bookishContext.SaveChangesAsync();
         }
 
         return RedirectToAction("BookList", "Catalogue");

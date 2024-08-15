@@ -16,6 +16,7 @@ public class CatalogueController : Controller
         _context = new BookishContext();
     }
 
+    [HttpGet]
     public IActionResult BookList(string sortOrder)
     {
         ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -48,7 +49,8 @@ public class CatalogueController : Controller
         
         return View(allBooks);
     }
-    
+
+    [HttpGet]
     public IActionResult Details(int? id)
     {
         if (id == null)
@@ -70,10 +72,38 @@ public class CatalogueController : Controller
     public ActionResult SearchResult(string searchInput)
     {
         BookModel foundBook = _context.Books.Where(book => book.Name == searchInput).FirstOrDefault<BookModel>();
-        return View("searchinput");
+        return View(foundBook);
     }
 
+    [HttpGet]
+    public IActionResult AddBook()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddBook(BookViewModel viewModel)
+    {
+        var newBook = new BookModel
+        {
+            Name = viewModel.Name,
+            Author = viewModel.Author,
+            Genre = viewModel.Genre,
+            Description = viewModel.Description,
+            TotalCopies = viewModel.TotalCopies,
+            AvailableCopies = viewModel.AvailableCopies
+        };
+        await _context.Books.AddAsync(newBook);
+
+        await _context.SaveChangesAsync();
+
+        return View();
+    }
+    
+    
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

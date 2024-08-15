@@ -13,6 +13,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [HttpGet]
     public IActionResult Index()
     {
         return View();
@@ -32,7 +33,8 @@ public class HomeController : Controller
         
     //     return View(allBooks);
     // }
-
+    
+    [HttpGet]
     public IActionResult Privacy()
     {
         return View();

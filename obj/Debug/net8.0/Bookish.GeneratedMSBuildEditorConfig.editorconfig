@@ -26,6 +26,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\AmySun\OneDrive - Softwire Technology Limited\Documents\TechSwitch\Bookish
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/AmySun/OneDrive - Softwire Technology Limited/Documents/TechSwitch/Bookish/Views/Catalogue/AddBook.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ3VlXEFkZEJvb2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/AmySun/OneDrive - Softwire Technology Limited/Documents/TechSwitch/Bookish/Views/Catalogue/BookList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ3VlXEJvb2tMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

@@ -11,5 +11,10 @@ namespace Bookish
         {
             optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=bookish;User Id=bookish;Password=bookish;");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BookModel>().Property(e => e.Id).UseIdentityAlwaysColumn();
+        }
     }
 }

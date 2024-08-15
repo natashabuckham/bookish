@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Bookish.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookish.Controllers;
 
@@ -100,7 +101,32 @@ public class CatalogueController : Controller
         return View();
     }
     
-    
+    [HttpGet]
+    public async Task<IActionResult> EditBook(int id)
+    {
+        var book = await _context.Books.FindAsync(id);
+
+        return View(book);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditBook(BookModel viewModel)
+    {
+        var book = await _context.Books.FindAsync(viewModel.Id);
+        if (book != null) {
+            book.Name = viewModel.Name;
+            book.Author = viewModel.Author;
+            book.Genre = viewModel.Genre;
+            book.Description = viewModel.Description;
+            book.TotalCopies = viewModel.TotalCopies;
+            book.AvailableCopies = viewModel.AvailableCopies;
+
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("BookList", "Catalogue");
+
+    }
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 

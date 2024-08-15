@@ -23,6 +23,8 @@
             <th>
                 @Html.DisplayNameFor(Model => Model[0].TotalCopies)
             </th>
+            <th>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -45,6 +47,7 @@
                 @Html.DisplayFor(modelItem => book.TotalCopies)
             </td>
             <td>
+                <a asp-controller="Catalogue" asp-action="EditBook" asp-route-id="@book.Id">Edit</a>
                 <a asp-action="Details" asp-route-id="@book.Id">Details</a>
             </td>
         </tr>

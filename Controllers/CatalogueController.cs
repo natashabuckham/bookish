@@ -98,7 +98,7 @@ public class CatalogueController : Controller
 
         await _context.SaveChangesAsync();
 
-        return View();
+        return RedirectToAction("BookList", "Catalogue");
     }
     
     [HttpGet]
@@ -125,7 +125,20 @@ public class CatalogueController : Controller
         }
 
         return RedirectToAction("BookList", "Catalogue");
+    }
 
+    [HttpPost]
+    public async Task<IActionResult> Delete(BookModel viewModel)
+    {
+        var book = await _context.Books.AsNoTracking().FirstOrDefaultAsync(x => x.Id == viewModel.Id);
+
+        if (book != null)
+        {
+            _context.Books.Remove(viewModel);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("BookList", "Catalogue");
     }
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

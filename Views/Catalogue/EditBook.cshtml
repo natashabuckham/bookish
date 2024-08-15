@@ -4,6 +4,11 @@
 
 <form method="post">
     <div>
+        <label>Id</label>
+        <input type="text" asp-for="Id" readonly>
+    </div>
+
+    <div>
         <label>Name</label>
         <input type="text" asp-for="Name">
     </div>
@@ -35,5 +40,6 @@
 
     <div>
         <button type="submit">Save</button>
+        <button type="submit" asp-controller="Catalogue" asp-action="Delete">Delete</button>
     </div>
 </form>

@@ -17,8 +17,7 @@ public class CatalogueController : Controller
         _context = new BookishContext();
     }
 
-    [HttpGet]
-    public IActionResult BookList(string sortOrder)
+    public IActionResult BookList(string sortOrder, string searchString = "")
     {
         ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
         ViewData["AuthorSortParm"] = sortOrder == "Author" ? "author_desc" : "Author";
@@ -29,25 +28,30 @@ public class CatalogueController : Controller
         switch (sortOrder)
         {
             case "name_desc":
-               allBooks = _context.Books.OrderByDescending(book => book.Name).ToList(); 
+                allBooks = _context.Books.OrderByDescending(book => book.Name).ToList();
                 break;
             case "Author":
-                allBooks = _context.Books.OrderBy(book => book.Author).ToList(); 
+                allBooks = _context.Books.OrderBy(book => book.Author).ToList();
                 break;
-             case "author_desc":
+            case "author_desc":
                 allBooks = _context.Books.OrderByDescending(book => book.Author).ToList();
                 break;
-             case "Genre":
+            case "Genre":
                 allBooks = _context.Books.OrderBy(book => book.Genre).ToList();
                 break;
-             case "genre_desc":
-                allBooks = _context.Books.OrderByDescending(book => book.Genre).ToList(); 
+            case "genre_desc":
+                allBooks = _context.Books.OrderByDescending(book => book.Genre).ToList();
                 break;
             default:
-                allBooks = _context.Books.OrderBy(book => book.Name).ToList(); 
+                allBooks = _context.Books.OrderBy(book => book.Name).ToList();
                 break;
         }
-        
+
+        if (!String.IsNullOrEmpty(searchString))
+        {
+            allBooks = _context.Books.Where(book => book.Name!.ToUpper().Contains(searchString.ToUpper())).ToList();
+        }
+
         return View(allBooks);
     }
 
